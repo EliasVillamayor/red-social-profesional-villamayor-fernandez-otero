@@ -1,6 +1,7 @@
 package redsocialprofesional;
 
-public interface IGrafoRed{
+public interface IGrafoRed {
+
     void insertarVertice(Usuario vertice);
 
     void eliminarVertice(Usuario vertice);
@@ -18,4 +19,7 @@ public interface IGrafoRed{
     void mostrarVertices();
 
     void mostrarContactos(Usuario usuario);
+
+    // Recomienda usuarios que son contactos de contactos pero no contactos directos
+    void recomendarContactos(Usuario usuario);
 }

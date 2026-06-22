@@ -1,19 +1,17 @@
 package redsocialprofesional;
 
 public class GrafoRed implements IGrafoRed {
+
     private Usuario[] vertices;
     private int[][] matriz;
     private int cantidad;
     private int capacidad;
     private boolean dirigido;
 
-
-
     public GrafoRed(int capacidad, boolean dirigido) {
         this.capacidad = capacidad;
         this.dirigido = dirigido;
         this.cantidad = 0;
-
         this.vertices = new Usuario[capacidad];
         this.matriz = new int[capacidad][capacidad];
     }
@@ -120,7 +118,6 @@ public class GrafoRed implements IGrafoRed {
         }
 
         cantidad--;
-
         vertices[cantidad] = null;
 
         for (int i = 0; i < capacidad; i++) {
@@ -139,8 +136,6 @@ public class GrafoRed implements IGrafoRed {
 
         System.out.println();
     }
-
-
 
     @Override
     public void mostrarMatriz() {
@@ -180,6 +175,82 @@ public class GrafoRed implements IGrafoRed {
             if (matriz[pos][i] == 1) {
                 System.out.print(vertices[i].getNombre() + " ");
             }
+        }
+
+        System.out.println();
+    }
+
+    // ---------------------------------------------------------------
+    // BFS para recomendar contactos de contactos
+    //
+    // Idea:
+    //   - visitados[]  → para no procesar el mismo nodo dos veces en el BFS
+    //   - esDirecto[]  → para saber si ya es contacto directo del usuario
+    //   - La cola del BFS maneja índices (int), por eso usamos un array
+    //     circular simple en lugar de ColaPostulantes (que es de Usuario).
+    //
+    // Recorre nivel 1 (contactos directos) y nivel 2 (sus contactos).
+    // Recomienda los del nivel 2 que no sean el propio usuario
+    // ni ya contactos directos suyos.
+    // ---------------------------------------------------------------
+    @Override
+    public void recomendarContactos(Usuario usuario) {
+        int posOrigen = obtenerIndice(usuario);
+
+        if (posOrigen == -1) {
+            System.out.println("El usuario no existe.");
+            return;
+        }
+
+        // Cola BFS con índices: usamos un array y dos punteros (cabeza y cola)
+        int[] colaBFS = new int[capacidad];
+        int cabeza = 0;
+        int colaIdx = 0;
+
+        // visitados[i] = true si ya fue procesado en el BFS
+        boolean[] visitados = new boolean[capacidad];
+
+        // esDirecto[i] = true si el nodo i es contacto directo del origen
+        boolean[] esDirecto = new boolean[capacidad];
+
+        // Marcar contactos directos (nivel 1)
+        for (int i = 0; i < cantidad; i++) {
+            if (matriz[posOrigen][i] == 1) {
+                esDirecto[i] = true;
+            }
+        }
+
+        // Arrancar BFS desde el nodo origen
+        visitados[posOrigen] = true;
+        colaBFS[colaIdx] = posOrigen;
+        colaIdx++;
+
+        System.out.print("Recomendaciones para " + usuario.getNombre() + ": ");
+        boolean hayRecomendaciones = false;
+
+        while (cabeza < colaIdx) {
+            int actual = colaBFS[cabeza];
+            cabeza++;
+
+            // Recorrer vecinos del nodo actual
+            for (int i = 0; i < cantidad; i++) {
+                if (matriz[actual][i] == 1 && !visitados[i]) {
+                    visitados[i] = true;
+                    colaBFS[colaIdx] = i;
+                    colaIdx++;
+
+                    // Es recomendable si no es el propio usuario
+                    // y no es ya contacto directo
+                    if (i != posOrigen && !esDirecto[i]) {
+                        System.out.print(vertices[i].getNombre() + " ");
+                        hayRecomendaciones = true;
+                    }
+                }
+            }
+        }
+
+        if (!hayRecomendaciones) {
+            System.out.print("(ninguna por ahora)");
         }
 
         System.out.println();
