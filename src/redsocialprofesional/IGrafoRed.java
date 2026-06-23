@@ -20,6 +20,6 @@ public interface IGrafoRed {
 
     void mostrarContactos(Usuario usuario);
 
-    // Recomienda usuarios que son contactos de contactos pero no contactos directos
+    // para ver contactos de contactos
     void recomendarContactos(Usuario usuario);
 }

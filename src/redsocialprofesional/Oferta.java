@@ -54,7 +54,7 @@ public class Oferta implements IOferta {
         return postulantes.getCantidad();
     }
 
-    // No forma parte de la interfaz, pero Usuario la necesita internamente
+    // no borrar
     public ColaPostulantes getPostulantes() {
         return postulantes;
     }

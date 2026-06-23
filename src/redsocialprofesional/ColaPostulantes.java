@@ -2,7 +2,6 @@ package redsocialprofesional;
 
 public class ColaPostulantes implements IColaPostulantes {
 
-    // Clase interna que representa cada nodo de la cola
     private class Nodo {
         Usuario usuario;
         Nodo siguiente;
@@ -13,8 +12,8 @@ public class ColaPostulantes implements IColaPostulantes {
         }
     }
 
-    private Nodo frente;   // primer elemento (el que se atiende primero)
-    private Nodo fin;      // ultimo elemento (donde se encola el siguiente)
+    private Nodo frente;
+    private Nodo fin;
     private int cantidad;
 
     public ColaPostulantes() {

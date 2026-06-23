@@ -31,15 +31,10 @@ public class Usuario implements IUsuario {
             return;
         }
 
-        // Delega en Oferta la lógica de validación y encolado.
-        // Si la oferta rechaza la postulación (propia oferta o duplicado),
-        // ella misma muestra el mensaje. Acá solo registramos si fue aceptada,
-        // verificando si el usuario quedó en la cola después de llamar a postular.
         int cantAntes = oferta.getPostulantes().getCantidad();
         oferta.postular(this);
         int cantDespues = oferta.getPostulantes().getCantidad();
 
-        // Solo registramos la oferta en el historial si la postulación fue aceptada
         if (cantDespues > cantAntes && cantPostuladas < MAX_OFERTAS) {
             ofertasPostuladas[cantPostuladas] = oferta;
             cantPostuladas++;

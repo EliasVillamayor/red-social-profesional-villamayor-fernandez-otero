@@ -8,12 +8,11 @@ public interface IOferta {
 
     Usuario getPublicadaPor();
 
-    // Intenta agregar un usuario a la cola de postulantes
+    // INTENTA agregar un usuario a la cola de postulantes
     void postular(Usuario usuario);
 
-    // Atiende (desencola) al primer postulante
+    // desencola al primer postulante
     Usuario atenderPostulante();
 
-    // Devuelve cuántos postulantes hay en la cola
     int getCantPostulantes();
 }
